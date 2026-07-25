@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sultry — Coleção Privada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #0c0a0b;
+    --wine: #3a0f1e;
+    --wine-deep: #260a15;
+    --blush: #d9a5ad;
+    --gold: #b98a4e;
+    --cream: #efe4da;
+    --line: rgba(239,228,218,0.14);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  h1,h2,h3, .serif{ font-family: 'Cormorant Garamond', serif; }
+
+  ::selection{ background: var(--wine); color: var(--cream); }
+
+  /* ---------- AGE GATE ---------- */
+  #gate{
+    position: fixed; inset: 0;
+    background: radial-gradient(circle at 50% 30%, #1a0d12 0%, #0c0a0b 70%);
+    z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    transition: opacity .8s ease, visibility .8s ease;
+  }
+  #gate.hidden{ opacity: 0; visibility: hidden; pointer-events: none; }
+
+  .gate-card{
+    text-align: center;
+    max-width: 420px;
+    position: relative;
+  }
+  .gate-eyebrow{
+    letter-spacing: .35em;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    opacity: .85;
+  }
+  .gate-card h1{
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    font-weight: 500;
+    letter-spacing: .08em;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .gate-card p{
+    font-size: 14px;
+    color: rgba(239,228,218,0.6);
+    line-height: 1.7;
+    margin-bottom: 34px;
+    font-weight: 300;
+  }
+  .gate-buttons{
+    display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  }
+  .btn{
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 15px 34px;
+    border-radius: 2px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--cream);
+    cursor: pointer;
+    transition: all .35s ease;
+  }
+  .btn:hover{ background: var(--gold); color: var(--black); }
+  .btn-exit{
+    border-color: var(--line);
+    color: rgba(239,228,218,0.45);
+  }
+  .btn-exit:hover{ background: transparent; border-color: rgba(239,228,218,0.3); color: var(--cream); }
+
+  .gate-legal{
+    margin-top: 28px;
+    font-size: 10.5px;
+    color: rgba(239,228,218,0.32);
+    letter-spacing: .03em;
+  }
+
+  /* petals / curtain deco */
+  .gate-frame{
+    position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+    width: 1px; height: 40px; background: linear-gradient(var(--gold), transparent);
+  }
+
+  /* ---------- MAIN SITE ---------- */
+  #site{ filter: blur(18px); transition: filter 1s ease; }
+  #site.reveal{ filter: blur(0); }
+
+  header.top{
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 26px 6vw;
+    mix-blend-mode: difference;
+  }
+  .brand{
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    letter-spacing: .3em;
+  }
+  .top-cta{
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 3px;
+  }
+
+  .hero{
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 120px 6vw 80px;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(58,15,30,0.55), transparent 60%),
+      var(--black);
+    overflow: hidden;
+  }
+
+  .hero-glow{
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(185,138,78,0.10), transparent 70%);
+    top: -200px;
+    filter: blur(20px);
+    pointer-events: none;
+  }
+
+  .hero .eyebrow{
+    letter-spacing: .4em;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 26px;
+  }
+  .hero h1{
+    font-size: clamp(3rem, 9vw, 6.4rem);
+    font-weight: 500;
+    letter-spacing: .05em;
+    line-height: 0.95;
+    max-width: 900px;
+  }
+  .hero h1 em{
+    font-style: italic;
+    color: var(--blush);
+  }
+  .hero p.sub{
+    max-width: 480px;
+    margin: 30px auto 46px;
+    font-size: 15.5px;
+    font-weight: 300;
+    color: rgba(239,228,218,0.62);
+    line-height: 1.8;
+  }
+
+  .cta-main{
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 14px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 19px 42px;
+    border-radius: 2px;
+    font-weight: 500;
+    transition: transform .35s ease, box-shadow .35s ease;
+    box-shadow: 0 10px 40px rgba(185,138,78,0.15);
+  }
+  .cta-main:hover{ transform: translateY(-3px); box-shadow: 0 14px 50px rgba(185,138,78,0.28); }
+  .cta-main svg{ width: 18px; height: 18px; }
+
+  .hero-note{
+    margin-top: 22px;
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: rgba(239,228,218,0.4);
+    text-transform: uppercase;
+  }
+
+  /* divider */
+  .divider{
+    width: 1px; height: 90px; margin: 0 auto;
+    background: linear-gradient(var(--gold), transparent);
+  }
+
+  /* features */
+  .strip{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .strip-item{
+    padding: 56px 30px;
+    text-align: center;
+    border-right: 1px solid var(--line);
+  }
+  .strip-item:last-child{ border-right: none; }
+  .strip-item .num{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 14px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .strip-item h3{
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: .03em;
+    margin-bottom: 10px;
+  }
+  .strip-item p{
+    font-size: 13.5px;
+    color: rgba(239,228,218,0.55);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* about / signature section */
+  .about{
+    padding: 140px 6vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .about-visual{
+    position: relative;
+    height: 420px;
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--wine-deep), var(--black));
+  }
+  .about-visual .ring{
+    width: 220px; height: 220px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: absolute;
+    opacity: .5;
+  }
+  .about-visual .ring2{ width: 280px; height: 280px; opacity: .25; }
+  .about-visual .center-word{
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--blush);
+    letter-spacing: .1em;
+  }
+  .about-text .eyebrow{
+    letter-spacing: .35em;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .about-text h2{
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  .about-text p{
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(239,228,218,0.6);
+    line-height: 1.85;
+    margin-bottom: 20px;
+    max-width: 480px;
+  }
+
+  /* final CTA band */
+  .final{
+    padding: 140px 6vw;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 100%, rgba(58,15,30,0.6), transparent 65%);
+    border-top: 1px solid var(--line);
+  }
+  .final .eyebrow{
+    letter-spacing: .35em;
+    font-size: 11px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .final h2{
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 500;
+    max-width: 700px;
+    margin: 0 auto 20px;
+    line-height: 1.15;
+  }
+  .final p{
+    font-size: 14.5px;
+    color: rgba(239,228,218,0.55);
+    font-weight: 300;
+    max-width: 440px;
+    margin: 0 auto 42px;
+    line-height: 1.8;
+  }
+
+  footer{
+    padding: 40px 6vw 50px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: rgba(239,228,218,0.35);
+    letter-spacing: .05em;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (max-width: 760px){
+    .strip{ grid-template-columns: 1fr; }
+    .strip-item{ border-right: none; border-bottom: 1px solid var(--line); }
+    .strip-item:last-child{ border-bottom: none; }
+    .about{ grid-template-columns: 1fr; }
+    .about-visual{ height: 300px; }
+    header.top{ padding: 20px 5vw; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ AGE GATE ============ -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="gate-frame"></div>
+    <div class="gate-eyebrow">Acesso restrito</div>
+    <h1 class="serif">Você tem mais<br>de 18 anos?</h1>
+    <p>Este site contém produtos e conteúdo destinados exclusivamente a adultos.<br>Confirme sua idade para continuar.</p>
+    <div class="gate-buttons">
+      <button class="btn" id="btn-yes">Sim, tenho +18</button>
+      <button class="btn btn-exit" id="btn-no">Sair</button>
+    </div>
+    <div class="gate-legal">Ao continuar, você confirma ter idade legal em sua localidade para visualizar este conteúdo.</div>
+  </div>
+</div>
+
+<!-- ============ SITE ============ -->
+<div id="site">
+
+  <header class="top">
+    <div class="brand">SULTRY SECRETS</div>
+    <a class="top-cta" href="https://t.me/SultryySecretss_bot" target="_blank" rel="noopener">Telegram</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="eyebrow">Coleção privada · +18</div>
+    <h1 class="serif">Conteudos Vazados<br><em>Grupo Telegram</em></h1>
+    <p class="sub">Tudo discreto para adultos, entrega sigilosa e atendimento direto — tudo dentro do seu Telegram.</p>
+
+    <a class="cta-main" href="https://t.me/SultryySecretss_bot" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.05 2.36 2.9 9.63c-1.24.5-1.23 1.2-.23 1.5l4.64 1.45 1.8 5.5c.22.6.37.85.76.85.3 0 .43-.14.6-.3l1.7-1.65 3.55 2.6c.65.36 1.12.17 1.28-.6l2.32-10.9c.24-1.02-.4-1.48-1.27-1.12Zm-11.4 9.1 7.8-4.9c.37-.22.7-.1.43.15l-6.5 5.87-.25 2.7-1.2-3.6Z"/></svg>
+      Falar no Telegram
+    </a>
+    <div class="hero-note">100% discreto · Sem julgamentos</div>
+  </section>
+
+  <div class="strip">
+    <div class="strip-item">
+      <span class="num">I</span>
+      <h3>Discrição total</h3>
+      <p>sem identificação do início ao fim do processo.</p>
+    </div>
+    <div class="strip-item">
+      <span class="num">II</span>
+      <h3>Atendimento direto</h3>
+      <p>Fale com uma pessoa real pelo Telegram, sem formulários ou burocracia.</p>
+    </div>
+    <div class="strip-item">
+      <span class="num">III</span>
+      <h3>Conteudo +18</h3>
+      <p>+ de 1.000 conteudos</p>
+    </div>
+  </div>
+
+
+
+  <section class="final">
+    <div class="eyebrow">Pronta(o) para continuar?</div>
+    <h2 class="serif">Seu Acesso começa<br>com um único toque</h2>
+    <p>Clique abaixo e fale agora mesmo pelo Telegram — sem cadastro, sem espera.</p>
+    <a class="cta-main" href="https://t.me/SultryySecretss_bot" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.05 2.36 2.9 9.63c-1.24.5-1.23 1.2-.23 1.5l4.64 1.45 1.8 5.5c.22.6.37.85.76.85.3 0 .43-.14.6-.3l1.7-1.65 3.55 2.6c.65.36 1.12.17 1.28-.6l2.32-10.9c.24-1.02-.4-1.48-1.27-1.12Zm-11.4 9.1 7.8-4.9c.37-.22.7-.1.43.15l-6.5 5.87-.25 2.7-1.2-3.6Z"/></svg>
+      Abrir Telegram
+    </a>
+  </section>
+
+  <footer>
+    <span>© 2026 Sultry — Conteúdo destinado a maiores de 18 anos.</span>
+    <span>Compra e uso por sua conta e risco. Consumo responsável.</span>
+  </footer>
+
+</div>
+
+<script>
+  const gate = document.getElementById('gate');
+  const site = document.getElementById('site');
+  const yes = document.getElementById('btn-yes');
+  const no = document.getElementById('btn-no');
+
+  yes.addEventListener('click', () => {
+    gate.classList.add('hidden');
+    site.classList.add('reveal');
+  });
+
+  no.addEventListener('click', () => {
+    window.location.href = 'https://www.google.com';
+  });
+</script>
+
+</body>
+</html>
